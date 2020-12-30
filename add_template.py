@@ -86,10 +86,10 @@ if yer_or_no():
         s = pxssh.pxssh()
         s.login(rm_ip, 'root', password)
         s.sendline('systemctl restart xochitl')
-        s.expect(pexpect.EOF)
-
+        s.prompt()
+        s.close()
     except pxssh.ExceptionPxssh as e:
-        print("SSH failed on login.")
+        print("SSH failed on login. Please, restart the reMarkable manually.")
         print(e)
 
 print('Done! Enjoy your new template.')
