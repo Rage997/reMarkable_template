@@ -11,8 +11,7 @@ import os
 from utils import effortless_scp, yer_or_no
 
 # reMarkable IP. If the connection is not through usb you need to change it
-rm_ip=10.11.99.1
-
+rm_ip='10.11.99.1'
 
 parser = argparse.ArgumentParser(description='A python script to copy a template to the reMarkable')
 parser.add_argument( 'template', action = 'store', type = str, help = 'The template to copy.' )
