@@ -2,7 +2,7 @@
 
 A python3 script to upload a template to the reMarkable. It will ask for the reMarkable ssh password.
 
-By default it uses the "usb" ssh IP 10.11.99.1 meaning that you need to connect the reMarkable through usb. You can change this to use network ssh IP by declaring the variable ```rm_ip``` in
+By default it uses the "usb" ssh IP 10.11.99.1 meaning that you need to connect the reMarkable through usb. You can change this to use network ssh IP by declaring the variable ```rm_ip``` in the correct IP
 
 ## Installation
 Run ```pip3 install -r requirements.txt ``` 
