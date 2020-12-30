@@ -1,15 +1,18 @@
-# Adds a template to the remarkable
+# Little python3 script to add a template to the remarkable using SSH connection
+
 import subprocess
 import json
 import sys
 import argparse
-import getpass # prompts user for passwrod without echoing
+import getpass
 import pexpect
 from pexpect import pxssh
 import os
+from utils import effortless_scp, yer_or_no
 
-# reMarkable IP. If the connectio is not through usb you need to change it
+# reMarkable IP. If the connection is not through usb you need to change it
 rm_ip=10.11.99.1
+
 
 parser = argparse.ArgumentParser(description='A python script to copy a template to the reMarkable')
 parser.add_argument( 'template', action = 'store', type = str, help = 'The template to copy.' )
@@ -37,28 +40,6 @@ description = {
   ]
 }
 # print('Template description: ', json.dumps(description))
-
-def effortless_scp(origin, destination, password):
-    '''Funcion to make scp calls easier'''
-    child = pexpect.spawn('scp ' + origin + ' ' + destination)
-    r = child.expect ('[pP]assword:')
-    if r==0:
-        child.sendline (password)
-        child.expect(pexpect.EOF)
-    if r!=0:
-        raise RuntimeError
-    child.close()
-
-def yer_or_no():
-    print('Continue? [y/n]:')
-    while True:
-        answer = input().lower()
-        if answer == 'y':
-            return True
-        elif answer == 'y':
-            return False
-        else:
-            print('Please, answer only Y or N')
 
 
 # # We need to add a description of the template to templates.json (see: https://remarkablewiki.com/tips/templates)
@@ -98,12 +79,18 @@ try:
 except RuntimeError as e:
     print('An error occured copying the template to reMarkable.')
 
-try:
-    s = pxssh.pxssh()
-    s.login(rm_ip, 'root', password)
-    s.sendline('systemctl restart xochitl')
-except pxssh.ExceptionPxssh as e:
-    print("SSH failed on login.")
-    print(e)
+print('To see the new template you need to restart the reMarkable. Do you want to do it now?')
+
+if yer_or_no():
+    print('Rebooting reMarkable.')
+    try:
+        s = pxssh.pxssh()
+        s.login(rm_ip, 'root', password)
+        s.sendline('systemctl restart xochitl')
+        s.expect(pexpect.EOF)
+
+    except pxssh.ExceptionPxssh as e:
+        print("SSH failed on login.")
+        print(e)
 
 print('Done! Enjoy your new template.')
