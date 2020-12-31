@@ -17,7 +17,7 @@ def yer_or_no():
         answer = input().lower()
         if answer == 'y':
             return True
-        elif answer == 'y':
+        elif answer == 'n':
             return False
         else:
             print('Please, answer only Y or N')
